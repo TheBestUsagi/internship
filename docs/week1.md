@@ -109,32 +109,11 @@ flowchart LR
 - **EL2（Hypervisor）**：虚拟化管理层（如 KVM/Hyper-V 的 hypervisor 部分）。  
 - **EL3（Secure Monitor）**：安全监控器/固件，**TrustZone** 的切换点
 
- ```mermaid
+```mermaid
 flowchart TB
-  %% nodes
-  EL3["EL3: Secure Monitor / TrustZone"]
-
-  subgraph N ["Normal World (NS)"]
-    EL2N["EL2: Hypervisor"]
-    EL1N["EL1: Kernel/OS"]
-    EL0N["EL0: Apps"]
-  end
-
-  subgraph S ["Secure World (S)"]
-    EL1S["EL1: Trusted OS (TEE)"]
-    EL0S["EL0: TEE Apps"]
-  end
-
-  %% edges (use ASCII only in labels)
-  EL0N -->|SVC| EL1N
-  EL1N -->|HVC| EL2N
-  EL0N -->|SMC| EL3
-  EL1N -->|SMC| EL3
-  EL2N -->|SMC| EL3
-
-  EL0S --> EL1S
-  EL1S -->|SMC return| EL3
-
-  EL3 <--> |World Switch| N
-  EL3 <--> |World Switch| S
+  EL3["EL3: Secure Monitor"]
+  EL2["EL2: Hypervisor"]
+  EL1["EL1: Kernel / OS"]
+  EL0["EL0: User Apps"]
+  EL0 --> EL1 --> EL2 --> EL3
 ```
