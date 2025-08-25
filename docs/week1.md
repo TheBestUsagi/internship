@@ -66,6 +66,36 @@
 - **现代“改进哈佛”**：**统一虚拟地址空间**，但在**缓存/总线**层面分离 
   - **Cortex-A**：典型“改进哈佛”（分离的 I/D cache、统一编程模型）。  
   - **Cortex-M**：更接近哈佛（独立的取指与数据通道、可能带 TCM）。
+flowchart LR
+  %% --- 冯·诺依曼 ---
+  subgraph V[冯·诺依曼（Von Neumann）]
+    CPU1[CPU]
+    BUS1[[统一存储总线]]
+    MEM1[(统一存储器<br/>指令+数据)]
+    CPU1 --- BUS1 --- MEM1
+  end
+
+  %% --- 哈佛 ---
+  subgraph H[哈佛（Harvard）]
+    CPU2[CPU]
+    IMEM[(指令存储/ICache)]
+    DMEM[(数据存储/DCache)]
+    CPU2 -- 指令总线 --> IMEM
+    CPU2 -- 数据总线 --> DMEM
+  end
+
+  %% --- 改进哈佛（现代CPU常见） ---
+  subgraph M[改进哈佛（统一编程模型，缓存/总线分离）]
+    CORE[CPU Core]
+    I[L1 I-Cache]
+    D[L1 D-Cache]
+    L2[L2 Cache/统一内存系统]
+    MEM2[(DRAM 主存)]
+    CORE -- 取指 --> I --> L2 --> MEM2
+    CORE -- 读写 --> D --> L2
+  end
+
+  V --- H --- M
 
 
   ## 5) ARM 有哪些“异常等级”（Exception Levels, EL）
