@@ -98,9 +98,7 @@ flowchart LR
     CORE -- 读写 --> D_L1 --> L2
   end
 
-  %% 用“代表性节点”跨子图连线作对比（不能直接写 V --- H --- M）
-  MEM1 -. compare .- IMEM
-  IMEM -. compare .- I_L1
+
 ```
 
 
