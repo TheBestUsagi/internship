@@ -89,35 +89,25 @@ CPU Core ─┤               ├─> [L2/统一内存] ── [DRAM]
 - **EL2（Hypervisor）**：虚拟化管理层（如 KVM/Hyper-V 的 hypervisor 部分）。  
 - **EL3（Secure Monitor）**：安全监控器/固件，**TrustZone** 的切换点
 
-  flowchart TD
-  %% 顶层：EL3 连接两大世界
-  EL3[EL3：Secure Monitor / TrustZone 切换点]
-
-  %% Normal World
-  subgraph N[Normal World（非安全态，NS）]
-    EL2N[EL2：Hypervisor（KVM/Hyper-V）]
-    EL1N[EL1：Kernel/OS（如 Linux）]
-    EL0N[EL0：应用程序（User）]
+ ```mermaid
+graph TD
+  EL3[EL3: Secure Monitor / TrustZone 切换点]
+  subgraph N[Normal World (NS)]
+    EL2N[EL2: Hypervisor]
+    EL1N[EL1: Kernel/OS]
+    EL0N[EL0: Apps]
   end
-
-  %% Secure World
-  subgraph S[Secure World（安全态，S）]
-    EL1S[EL1：Trusted OS（TEE/安全内核）]
-    EL0S[EL0：TEE Apps（受信应用）]
+  subgraph S[Secure World (S)]
+    EL1S[EL1: Trusted OS (TEE)]
+    EL0S[EL0: TEE Apps]
   end
-
-  %% 层内关系（从低到高特权）
-  EL0N -->|SVC/异常| EL1N
-  EL1N -->|HVC/虚拟化异常| EL2N
-  EL1N -->|SMC 调用| EL3
-  EL0N -->|SMC 调用| EL3
-  EL2N -->|SMC 调用| EL3
-
+  EL0N -->|SVC| EL1N
+  EL1N -->|HVC| EL2N
+  EL0N -->|SMC| EL3
+  EL1N -->|SMC| EL3
+  EL2N -->|SMC| EL3
   EL0S --> EL1S
-  EL1S -->|SMC/返回| EL3
-
-  %% 世界切换
+  EL1S -->|SMC 返回| EL3
   EL3 <--> |World Switch| N
   EL3 <--> |World Switch| S
-
-
+```
