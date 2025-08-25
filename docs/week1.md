@@ -90,24 +90,31 @@ CPU Core ─┤               ├─> [L2/统一内存] ── [DRAM]
 - **EL3（Secure Monitor）**：安全监控器/固件，**TrustZone** 的切换点
 
  ```mermaid
-graph TD
-  EL3[EL3: Secure Monitor / TrustZone 切换点]
-  subgraph N[Normal World (NS)]
-    EL2N[EL2: Hypervisor]
-    EL1N[EL1: Kernel/OS]
-    EL0N[EL0: Apps]
+flowchart TB
+  %% nodes
+  EL3["EL3: Secure Monitor / TrustZone"]
+
+  subgraph N ["Normal World (NS)"]
+    EL2N["EL2: Hypervisor"]
+    EL1N["EL1: Kernel/OS"]
+    EL0N["EL0: Apps"]
   end
-  subgraph S[Secure World (S)]
-    EL1S[EL1: Trusted OS (TEE)]
-    EL0S[EL0: TEE Apps]
+
+  subgraph S ["Secure World (S)"]
+    EL1S["EL1: Trusted OS (TEE)"]
+    EL0S["EL0: TEE Apps"]
   end
+
+  %% edges (use ASCII only in labels)
   EL0N -->|SVC| EL1N
   EL1N -->|HVC| EL2N
   EL0N -->|SMC| EL3
   EL1N -->|SMC| EL3
   EL2N -->|SMC| EL3
+
   EL0S --> EL1S
-  EL1S -->|SMC 返回| EL3
+  EL1S -->|SMC return| EL3
+
   EL3 <--> |World Switch| N
   EL3 <--> |World Switch| S
 ```
