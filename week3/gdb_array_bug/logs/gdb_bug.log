@@ -1,0 +1,27 @@
+Breakpoint 1 at 0x11dc: file src/main_bug.c, line 5.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+
+Breakpoint 1, print_array (arr=0x5555555592a0, size=5) at src/main_bug.c:5
+5	    for (int i = 0; i < size; i++) {
+main () at src/main_bug.c:25
+25	    int *ptr = array + 5; 
+Hardware watchpoint 2: -location *(array+5)
+
+Hardware watchpoint 2: -location *(array+5)
+
+Old value = 0
+New value = 10
+main () at src/main_bug.c:28
+28	    printf("Modified array: ");
+#0  main () at src/main_bug.c:28
+array = 0x5555555592a0
+ptr = 0x5555555592b4
+$1 = (int *) 0x5555555592a0
+$2 = (int *) 0x5555555592b4
+$3 = (int *) 0x5555555592a0
+$4 = (int *) 0x5555555592b0
+$5 = (int *) 0x5555555592b4
+0x55555555929c:	0	1	2	3
+0x5555555592ac:	4	5	10	1041
+0x5555555592bc:	0	1734963791	1818324585	1920098592
