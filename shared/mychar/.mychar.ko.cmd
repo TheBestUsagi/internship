@@ -1,0 +1,1 @@
+savedcmd_/home/usagi/shared/mychar/mychar.ko := arm-linux-gnueabihf-ld -r -EL -z noexecstack --build-id=sha1  -T scripts/module.lds -o /home/usagi/shared/mychar/mychar.ko /home/usagi/shared/mychar/mychar.o /home/usagi/shared/mychar/mychar.mod.o /home/usagi/shared/mychar/.module-common.o
